@@ -15,12 +15,21 @@ class Article extends Model
         'content',
         'banner_url',
         'status',
-        'user_id',
     ];
 
     protected $attributes = [
         'status' => 'pending',
     ];
+
+    protected static function booted()
+{
+    static::creating(function ($article) {
+        if (empty($article->user_id)) {
+            $article->user_id = 1;
+        }
+    });
+}
+
 
     public function user()
     {
