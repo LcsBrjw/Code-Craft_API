@@ -15,6 +15,7 @@ class Article extends Model
         'content',
         'banner_url',
         'status',
+        'tags',
     ];
 
     protected $attributes = [
@@ -41,8 +42,4 @@ class Article extends Model
         return $this->hasMany(Comment::class);
     }
 
-    public function tags()
-    {
-        return $this->belongsToMany(Tag::class, 'article_tag');
-    }
 }
