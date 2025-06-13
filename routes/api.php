@@ -27,8 +27,8 @@ Route::get('/articles/latest', function() {
 });
 
 // ajouter un commentaire à un article
-Route::post('/comments', [CommentController::class, 'store']);
+Route::post('/article/{articleId}/comment', [CommentController::class, 'store']);
 
 // récupération de tous les commentaires d'un article
-Route::get('/articles/{id}/comments', [CommentController::class, 'index']);
+Route::get('/article/{articleId}/comments', [CommentController::class, 'index']);
 

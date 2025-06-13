@@ -20,13 +20,11 @@ class Comment extends Model
         return $this->belongsTo(User::class, 'creator_id');
     }
 
-    // Relation avec l'article
     public function article()
     {
         return $this->belongsTo(Article::class);
     }
 
-    // Hook pour définir creator_id par défaut à 1 si non défini
     protected static function booted()
     {
         static::creating(function ($comment) {

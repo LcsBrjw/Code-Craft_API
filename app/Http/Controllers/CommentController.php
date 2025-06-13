@@ -7,21 +7,36 @@ use Illuminate\Http\Request;
 
 class CommentController extends Controller
 {
-    public function store(Request $request)
-    {
-        $validated = $request->validate([
-            'content' => 'required|string',
-            'article_id' => 'required|exists:articles,id',
-        ]);
+    public function store(Request $request, $articleId)
+{
+    $validated = $request->validate([
+        'content' => 'required|string',
+    ]);
 
-        $comment = Comment::create([
-            'content' => $validated['content'],
-            'article_id' => $validated['article_id'],
-        ]);
+    $comment = new Comment();
+    $comment->content = $validated['content'];
+    $comment->article_id = $articleId;
+    $comment->creator_id = auth()->id(); // par exemple si tu utilises l’auth
+    $comment->save();
 
-        return response()->json([
-            'message' => 'Commentaire ajouté avec succès',
-            'comment' => $comment->load('user'),
-        ], 201);
-    }
+    $comment->load('user');
+
+    return response()->json(['comment' => $comment], 201);
+}
+
+
+
+public function index($articleId)
+{
+    $comments = Comment::with('user')
+                       ->where('article_id', $articleId)
+                       ->orderBy('created_at', 'desc')
+                       ->get();
+
+    return response()->json([
+        'comments' => $comments
+    ]);
+}
+
+
 }
