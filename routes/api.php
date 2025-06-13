@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CommentController;
 use App\Models\Article;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ArticleController;
@@ -24,3 +25,10 @@ Route::delete('/article/{id}', ArticleController::class . '@deleteArticle');
 Route::get('/articles/latest', function() {
     return Article::with('user')->latest()->first();
 });
+
+// ajouter un commentaire à un article
+Route::post('/comments', [CommentController::class, 'store']);
+
+// récupération de tous les commentaires d'un article
+Route::get('/articles/{id}/comments', [CommentController::class, 'index']);
+
