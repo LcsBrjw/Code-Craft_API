@@ -16,7 +16,7 @@ class CommentController extends Controller
     $comment = new Comment();
     $comment->content = $validated['content'];
     $comment->article_id = $articleId;
-    $comment->creator_id = auth()->id(); // par exemple si tu utilises l’auth
+    $comment->creator_id = auth()->id();
     $comment->save();
 
     $comment->load('user');

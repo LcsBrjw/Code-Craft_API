@@ -16,11 +16,15 @@ class UserController extends Controller
         return response()->json($users);
     }
 
+
+
     // Affiche un user spécifique
     public function show(User $user)
     {
         return response()->json($user);
     }
+
+
 
     // Crée un nouvel utilisateur
     public function store(Request $request)
@@ -29,7 +33,6 @@ class UserController extends Controller
             'username' => ['required', 'string', 'max:255', 'unique:users'],
             'email' => ['required', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'string', 'min:6', 'confirmed'],
-            'avatar_url' => ['nullable', 'string', 'max:2048'],
         ]);
 
         $data['password'] = Hash::make($data['password']);
@@ -39,6 +42,8 @@ class UserController extends Controller
         return response()->json($user, 201);
     }
 
+
+
     // Met à jour un utilisateur existant
     public function update(Request $request, User $user)
     {
@@ -46,7 +51,6 @@ class UserController extends Controller
             'username' => ['sometimes', 'string', 'max:255', Rule::unique('users')->ignore($user->id)],
             'email' => ['sometimes', 'email', 'max:255', Rule::unique('users')->ignore($user->id)],
             'password' => ['nullable', 'string', 'min:6', 'confirmed'],
-            'avatar_url' => ['nullable', 'string', 'max:2048'],
         ]);
 
         if (!empty($data['password'])) {
@@ -60,6 +64,8 @@ class UserController extends Controller
         return response()->json($user);
     }
 
+
+    
     // Supprime un utilisateur
     public function destroy(User $user)
     {
