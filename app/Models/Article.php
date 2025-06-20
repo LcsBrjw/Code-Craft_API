@@ -26,7 +26,7 @@ class Article extends Model
 {
     static::creating(function ($article) {
         if (empty($article->user_id)) {
-            $article->user_id;
+            $article->user_id = 1;
         }
     });
 }

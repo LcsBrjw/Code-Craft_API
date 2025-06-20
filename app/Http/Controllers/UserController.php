@@ -16,6 +16,21 @@ class UserController extends Controller
         return response()->json($users);
     }
 
+    // Affiche les meilleurs utilisateurs
+    public function topContributors()
+{
+    $topContributors = \App\Models\User::withCount('articles')
+        ->orderByDesc('articles_count')
+        ->take(5)
+        ->get();
+
+    return response()->json([
+        'message' => 'Top contributors retrieved successfully',
+        'contributors' => $topContributors,
+    ]);
+}
+
+
 
 
     // Affiche un user spécifique

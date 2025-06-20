@@ -17,7 +17,7 @@ use App\Http\Controllers\CommentController;
 Route::get('/articles', ArticleController::class . '@getArticles');
 
 // création d'un article
-Route::post('/new-article', ArticleController::class . '@createArticle');
+Route::post('/new-article', [ArticleController::class, 'createArticle']);
 
 //affichage, modification, suppression d'un article
 Route::get('/article/{id}', ArticleController::class . '@getArticle');
@@ -35,12 +35,18 @@ Route::post('/article/{articleId}/comment', [CommentController::class, 'store'])
 // récupération de tous les commentaires d'un article
 Route::get('/article/{articleId}/comments', [CommentController::class, 'index']);
 
+// Affichage des tags les plus populaires
+Route::get('/popular-tags', [ArticleController::class, 'getPopularTags']);
+
 
 
 // GESTION DES UTILISATEURS
 
 // Affichage de tous les utilisateurs
 Route::get('/users', UserController::class . '@index');
+
+//Affichage des meilleurs utilisateurs
+Route::get('/top-contributors', [UserController::class, 'topContributors']);
 
 // Affichage d'un utilisateur spécifique
 Route::get('/user/{user}', UserController::class . '@show');

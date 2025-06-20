@@ -29,7 +29,7 @@ class Comment extends Model
     {
         static::creating(function ($comment) {
             if (empty($comment->creator_id)) {
-                $comment->creator_id;
+                $comment->creator_id = 1;
             }
         });
     }

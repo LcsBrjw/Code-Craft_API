@@ -23,7 +23,7 @@ class ArticleController extends Controller
             'title' => $request->title,
             'subtitle' => $request->subtitle,
             'content' => $request->content,
-            'image' => $request->image,
+            'banner_url' => $request->image,
             'tags' => $request->tags,
         ]);
 
@@ -37,8 +37,13 @@ class ArticleController extends Controller
 
 
     // Affichage de tous les articles
-    public function getArticles() {
-        $articles = Article::all();
+    public function getArticles(Request $request) {
+        $limit = $request->query('limit', 8); // permet ?limit=8 côté frontend
+        $articles = Article::with('user')
+            ->orderBy('created_at', 'desc')
+            ->take($limit)
+            ->get();
+
         return response()->json([
             'message' => 'Articles retrieved successfully',
             'articles' => $articles
@@ -98,4 +103,22 @@ class ArticleController extends Controller
             'article' => $articleDeleted
         ]);
     }
+
+
+    // Récupération des tags les plus populaires
+    public function getPopularTags()
+{
+    $popularTags = \App\Models\Article::select('tag', \DB::raw('COUNT(*) as count'))
+        ->whereNotNull('tag')
+        ->groupBy('tag')
+        ->orderByDesc('count')
+        ->take(5)
+        ->get();
+
+    return response()->json([
+        'message' => 'Popular tags retrieved successfully',
+        'tags' => $popularTags,
+    ]);
+}
+
 }
